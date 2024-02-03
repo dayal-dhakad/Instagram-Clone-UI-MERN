@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Loading from "./components/Loading";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -8,8 +9,13 @@ function App() {
   return (
     <div className="bg-slate-200">
       <div className="w-[50%] mx-auto">
-        {loading ? <Loading /> :
-         <div>This is homepage</div>}
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            <LoginPage />
+          </div>
+        )}
       </div>
     </div>
   );
