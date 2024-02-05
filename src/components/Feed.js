@@ -3,7 +3,7 @@ import Post from "./Post";
 import data from "../data";
 
 function Feed() {
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className=" overflow-y-auto mt-[65px] mb-[70px]">

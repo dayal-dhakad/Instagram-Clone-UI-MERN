@@ -3,7 +3,7 @@ import profileData from "../profileData";
 import SinglePost from "./SinglePost";
 
 function AllPosts() {
-  console.log(profileData.posts);
+  // console.log(profileData.posts);
 
   return (
     <div className="grid grid-cols-4 gap-2 ">

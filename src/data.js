@@ -1,6 +1,9 @@
 import bjp from "./assets/bjp.jpeg";
 import post1 from "./assets/post1.jpg"
 
+
+
+
 const data = [
   {
     id: 1,
