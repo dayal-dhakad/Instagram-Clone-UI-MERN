@@ -8,40 +8,27 @@ import { MdGridOn } from "react-icons/md";
 import AllPosts from "../components/AllPosts";
 import axios from "axios";
 import { AppContext } from "../Context/AppContext";
-import BASE_URL from "../config";
+
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const [profileInfo, setProfileInfo] = useState();
+  const {profileInfo, setProfileInfo} = useContext(AppContext);
   const { userId } = useContext(AppContext);
-  const [loading, setLoading] = useState(true);
-  async function fetchProfile() {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/protected/profile/${userId}`,
-        {
-          headers: {
-            authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      //  console.log(response.data.data.username);
-      setProfileInfo(response.data.data);
+  const {profileLoading} = useContext(AppContext);
+  const navigate = useNavigate();
+ 
 
-      setLoading(false);
-    } catch (error) {
-      console.log("error fetching profile");
-    }
+  function editProfileHandler(){
+        navigate("/editprofile");
   }
-  console.log("profileInfo:", profileInfo);
-  useEffect(() => {
-    fetchProfile();
-    // console.log(userId);
-  }, []);
 
   return (
     <div>
-      {loading ? (
-        <div>Profile is loading</div>
+      {profileLoading ? (
+        <div>Profile is loading
+        <div>
+          <Footer/>
+        </div></div>
       ) : (
         <div className="bg-white">
           <div className="flex justify-between items-center pt-2 mb-4">
@@ -82,7 +69,7 @@ function Profile() {
           </div>
 
           <div className="flex items-center justify-evenly mt-5 mb-5">
-            <button className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5">
+            <button onClick={editProfileHandler} className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5">
               Edit profile
             </button>
             <button className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5">

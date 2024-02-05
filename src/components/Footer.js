@@ -10,16 +10,21 @@ import { BsCameraReels } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 function Footer() {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
+
+  function logoutHandler() {
+    window.localStorage.clear();
+    navigate('/login')
+  }
 
   return (
     <div className="bottom-0 bg-white border-t-[1px] border-black fixed w-[50%]">
       <div className="flex mt-2 pb-2 justify-around items-center">
-        <MdHomeFilled onClick={()=>navigate('/')} className="text-3xl" />
+        <MdHomeFilled onClick={() => navigate("/")} className="text-3xl" />
         <IoIosSearch className="text-3xl" />
         <CiSquarePlus className="text-3xl" />
-        <BsCameraReels className="text-3xl" />
-        <div onClick={()=>navigate('/profile')} className="">
+        <BsCameraReels onClick={logoutHandler} className="text-3xl" />
+        <div onClick={() => navigate("/profile")} className="">
           <img
             className="rounded-full w-9 h-9 "
             src={profileData.profileImg}

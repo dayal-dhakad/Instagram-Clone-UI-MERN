@@ -1,18 +1,24 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../config";
 
 export const AppContext = createContext();
 
 export default function AppContextProvider({ children }) {
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
+  const [profileInfo, setProfileInfo] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
+
   const [loginFormData, setloginFormData] = useState({
     username: "",
     password: "",
   });
+
+  const active = window.localStorage.getItem("isActive");
 
   // Fetch Blog Data
   async function loginSubmitHandler(event) {
@@ -35,7 +41,8 @@ export default function AppContextProvider({ children }) {
       //   console.log(userId);
       const { token, user } = response.data;
       setUserId(user._id);
-      localStorage.setItem("token", token);
+      window.localStorage.setItem("token", token);
+      window.localStorage.setItem("isActive", true);
       setIsLoggedIn(true);
       console.log(token);
 
@@ -48,7 +55,29 @@ export default function AppContextProvider({ children }) {
     }
   }
 
-  // Handle When Next and Previous button are clicked
+  console.log(userId);
+  // Profile INfo
+  useEffect(() => {
+    if (isLoggedIn) {
+      async function fetchProfile() {
+        try {
+          const response = await axios.get(
+            `${BASE_URL}/protected/profile/${userId}`,
+            {
+              headers: {
+                authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+          setProfileInfo(response.data.data);
+          setProfileLoading(false);
+        } catch (error) {
+          console.log("error fetching profile", error);
+        }
+      }
+      fetchProfile();
+    }
+  }, [isLoggedIn, userId]);
 
   const value = {
     userId,
@@ -58,6 +87,9 @@ export default function AppContextProvider({ children }) {
     loginSubmitHandler,
     isLoggedIn,
     setIsLoggedIn,
+    profileInfo,
+    setProfileInfo,
+    profileLoading,
 
     // loading,
     // setLoading,
