@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import toast from "react-hot-toast";
 
 function SignUpForm() {
 
@@ -37,6 +38,7 @@ function SignUpForm() {
       console.log(response);
       if (response.status===200) {
         console.log("Successfully signed up")
+        toast.success("Registered Successfully")
       }
       navigate('/login');
 
@@ -54,6 +56,7 @@ function SignUpForm() {
     
     } catch (error) {
       console.error("Error signing up:", error.message);
+      toast.error("Error Signing up, Please try again later")
     }
   }
 

@@ -4,10 +4,10 @@ import Feed from "../components/Feed";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { AppContext } from "../Context/AppContext";
-import BASE_URL from '../config'
+import BASE_URL from "../config";
 
 function Home() {
-  const { userId, setUserId } = useContext(AppContext);
+  const { userId } = useContext(AppContext);
 
   useEffect(() => {
     async function fetchHomeData() {
@@ -18,7 +18,7 @@ function Home() {
         //   console.error("Token is missing");
         //   return;
         // }
-        
+
         console.log(BASE_URL);
 
         const response = await axios.get(`${BASE_URL}/home`, {
@@ -29,8 +29,7 @@ function Home() {
 
         if (response.status === 200) {
           console.log("Successfully fetched home data:", response.data.payload);
-          setUserId(response.data.payload.id);
-          console.log(userId);
+          // setUserId(response.data.payload.id);
         }
       } catch (error) {
         console.error("Error in home page:", error.message);

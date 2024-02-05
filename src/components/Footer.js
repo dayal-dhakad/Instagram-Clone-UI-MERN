@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MdHomeFilled } from "react-icons/md";
 import profileData from "../profileData";
 // import { GoHome } from "react-icons/go"; <GoHome />
@@ -8,14 +8,20 @@ import { CiSquarePlus } from "react-icons/ci";
 import { FaCircle } from "react-icons/fa6";
 import { BsCameraReels } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../Context/AppContext";
+import { toast } from 'react-hot-toast'
 
 function Footer() {
   const navigate = useNavigate();
-
+  const {profilePhoto} = useContext(AppContext);
   function logoutHandler() {
     window.localStorage.clear();
+    toast.error("Logged Out")
     navigate('/login')
   }
+  
+
+
 
   return (
     <div className="bottom-0 bg-white border-t-[1px] border-black fixed w-[50%]">
@@ -27,7 +33,7 @@ function Footer() {
         <div onClick={() => navigate("/profile")} className="">
           <img
             className="rounded-full w-9 h-9 "
-            src={profileData.profileImg}
+            src={profilePhoto}
             alt=""
           />
         </div>

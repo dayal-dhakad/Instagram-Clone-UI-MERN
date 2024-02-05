@@ -4,10 +4,11 @@ import { AppContext } from "../Context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../config";
+import toast from "react-hot-toast";
 
 function EditProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { profileInfo, userId } = useContext(AppContext);
+  const { userId, profilePhoto } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
@@ -35,8 +36,10 @@ function EditProfile() {
         }
       );
       console.log("Upload successful", response.data);
+      toast.success("Picture Updated Successfully")
     } catch (error) {
       console.error("Error uploading image", error);
+      toast.error("Error in Changing image ")
     }
   }
 
@@ -53,11 +56,7 @@ function EditProfile() {
       <div className="flex flex-col items-center justify-center">
         <div className="">
           {/* old picture */}
-          <img
-            className="w-20 h-20 rounded-full"
-            src={profileInfo.profileImg}
-            alt=""
-          />
+          <img className="w-20 h-20 rounded-full" src={profilePhoto} alt="" />
         </div>
         <div className="flex flex-col justify-center items-center">
           {/* <p className="text-blue-800 font-semibold text-sm">Edit picture</p> */}

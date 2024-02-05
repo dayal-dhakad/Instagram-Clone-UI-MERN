@@ -8,27 +8,56 @@ import { MdGridOn } from "react-icons/md";
 import AllPosts from "../components/AllPosts";
 import axios from "axios";
 import { AppContext } from "../Context/AppContext";
+import BASE_URL from "../config";
 
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const {profileInfo, setProfileInfo} = useContext(AppContext);
+  const [profileInfo, setProfileInfo] = useState();
   const { userId } = useContext(AppContext);
-  const {profileLoading} = useContext(AppContext);
-  const navigate = useNavigate();
- 
+  const { setProfilePhoto } = useContext(AppContext);
 
-  function editProfileHandler(){
-        navigate("/editprofile");
+  const navigate = useNavigate();
+  const active = window.localStorage.getItem("isActive");
+  const [profileLoading, setProfileLoading] = useState(true);
+
+  function editProfileHandler() {
+    navigate("/editprofile");
   }
+
+  useEffect(() => {
+    if (active && userId) {
+      async function fetchProfile() {
+        try {
+          const response = await axios.get(
+            `${BASE_URL}/protected/profile/${userId}`,
+            {
+              headers: {
+                authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+          setProfileInfo(response.data.data);
+          setProfileLoading(false);
+          setProfilePhoto(response.data.data.profileImg);
+        } catch (error) {
+          console.log("error fetching profile", error);
+        }
+      }
+      setProfileLoading(true);
+      fetchProfile();
+    }
+  }, [active, userId]);
 
   return (
     <div>
       {profileLoading ? (
-        <div>Profile is loading
         <div>
-          <Footer/>
-        </div></div>
+          Profile is loading
+          <div>
+            <Footer />
+          </div>
+        </div>
       ) : (
         <div className="bg-white">
           <div className="flex justify-between items-center pt-2 mb-4">
@@ -69,7 +98,10 @@ function Profile() {
           </div>
 
           <div className="flex items-center justify-evenly mt-5 mb-5">
-            <button onClick={editProfileHandler} className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5">
+            <button
+              onClick={editProfileHandler}
+              className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5"
+            >
               Edit profile
             </button>
             <button className="bg-slate-300 w-2/5 rounded-lg pt-1 pb-1 pr-5 pl-5">
